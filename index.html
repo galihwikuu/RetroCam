@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<link rel="manifest" href="manifest.json">
+
+<meta name="theme-color" content="#8fbf73">
+
+<meta name="mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+<meta name="apple-mobile-web-app-title" content="NokiaCam">
+
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="style.css">
+<title>NOKIA CAM</title>
+</head>
+<body>
+
+<div class="phone">
+  <div class="brand">◆ W I K U ◆</div>
+
+  <div class="screen-bezel">
+    <div class="statusbar">
+      <span id="clock">00:00</span>
+      <span id="battery">▮▮▮</span>
+    </div>
+    <div class="screen-wrap">
+      <canvas id="out" width="120" height="160"></canvas>
+      <!-- <div class="scanlines"></div> -->
+      <div class="vignette"></div>
+      <div class="flash" id="flash"></div>
+      <div class="rec-indicator" id="recIndicator"><span class="rec-dot"></span><span id="recTime">00:00</span></div>
+    </div>
+    <div class="caption" id="caption">SIAP MEMOTRET</div>
+  </div>
+
+    <div class="controls">
+
+        <div class="softkey" id="btnSwitch">
+            GANTI<br>KAMERA
+        </div>
+
+        <div class="shutter" id="btnShot">
+            JEPRET
+        </div>
+
+        <div class="softkey" id="btnSave">
+            SIMPAN
+        </div>
+
+    </div>
+
+    <div class="rowbtn">
+
+        <button class="keybtn" id="btnRetry">
+            ULANG
+        </button>
+
+        <button class="keybtn" id="btnMode">
+            MODE: FOTO
+        </button>
+
+        <button class="keybtn" id="btnTone">
+            WARNA
+        </button>
+
+    </div>
+
+  <div class="rowbtn">
+    <button class="keybtn" id="btnDither">DITHER: OFF</button>
+  </div>
+
+  <select id="camSelect"></select>
+  <div class="hint" id="hint">Foto disimpan resolusi asli 120×160px</div>
+</div>
+
+<video id="video" autoplay playsinline muted style="display:none"></video>
+<canvas id="grab" width="120" height="160" style="display:none"></canvas>
+
+<script src="script.js"></script>
+
+</body>
+</html>
