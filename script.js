@@ -33,8 +33,8 @@ const recIndicator = document.getElementById('recIndicator');
 const recTimeEl = document.getElementById('recTime');
 const hintEl = document.getElementById('hint');
 
-const W = 120;
-const H = 160;
+const W = 480;
+const H = 640;
 let stream = null;
 let currentFacing = "environment";
 let retroColor = false;
