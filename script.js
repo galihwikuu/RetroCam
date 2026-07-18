@@ -1,25 +1,30 @@
 const video = document.getElementById('video');
 video.setAttribute("playsinline","");
-
 video.setAttribute("muted","");
-
 video.setAttribute("autoplay","");
 
 const grab = document.getElementById('grab');
 const gctx = grab.getContext('2d', { willReadFrequently: true });
+
 const out = document.getElementById('out');
-const octx = out.getContext("2d",{
-
-    alpha:false,
-
-    willReadFrequently:true
-
+const octx = out.getContext("2d", {
+    alpha: false,
+    willReadFrequently: true
 });
 octx.imageSmoothingEnabled = true;
 gctx.imageSmoothingEnabled = true;
 
+// deteksi gerakan buat efek shake
+const motionCanvas = document.createElement('canvas');
+motionCanvas.width = 20;
+motionCanvas.height = 27;
+const motionCtx = motionCanvas.getContext('2d', { willReadFrequently: true });
+let prevMotionData = null;
+let motionLevel = 0; // 0 = diam, mendekati 1 = gerak kencang
+
 const caption = document.getElementById('caption');
 const flashEl = document.getElementById('flash');
+const btnShake = document.getElementById('btnShake');
 const btnDither = document.getElementById('btnDither');
 const btnTone = document.getElementById('btnTone');
 const btnMode = document.getElementById('btnMode');
@@ -53,6 +58,9 @@ let audioDestination = null;
 let micStream = null;
 let lastPhotoURL = null;
 let noiseOn = false;
+let shakeOn = false; // bisa di-toggle kalau mau
+let shakeX = 0;
+let shakeY = 0;
 
 console.log(out.width,out.height);
 console.log(out.clientWidth,out.clientHeight);
@@ -194,6 +202,57 @@ function applyNoise(data, density){
     }
 }
 
+function detectMotion(){
+    if(video.readyState < 2) return 0;
+
+    motionCtx.drawImage(video, 0, 0, motionCanvas.width, motionCanvas.height);
+    const frame = motionCtx.getImageData(0, 0, motionCanvas.width, motionCanvas.height).data;
+
+    if(!prevMotionData){
+        prevMotionData = new Uint8ClampedArray(frame);
+        return 0;
+    }
+
+    let diffSum = 0;
+    for(let i = 0; i < frame.length; i += 4){
+        diffSum += Math.abs(frame[i] - prevMotionData[i]);
+    }
+    prevMotionData.set(frame);
+
+    return diffSum / (frame.length / 4); // rata-rata perbedaan tiap pixel (0-255)
+}
+
+function updateShake(motion){
+    if(!shakeOn){
+        shakeX = 0;
+        shakeY = 0;
+        motionLevel = 0;
+        return;
+    }
+
+    const threshold = 3;   // di bawah ini dianggap diam total
+    const maxDiff = 25;    // di atas ini dianggap gerak penuh
+
+    let m = Math.max(0, motion - threshold) / (maxDiff - threshold);
+    m = Math.min(1, m);
+
+    // smoothing biar transisi diam <-> gerak nggak patah-patah
+    motionLevel += (m - motionLevel) * 0.3;
+
+    const amplitude = motionLevel * 2.5;
+
+    shakeX += (Math.random() - 0.5) * amplitude;
+    shakeY += (Math.random() - 0.5) * amplitude;
+
+    // damping: kalau sudah diam, shake pelan-pelan balik ke 0, bukan mendadak
+    shakeX *= 0.8;
+    shakeY *= 0.8;
+
+    shakeX = Math.max(-3, Math.min(3, shakeX));
+    shakeY = Math.max(-3, Math.min(3, shakeY));
+}
+
+
 function renderFrame(){
 
     if(video.readyState < 2) return;
@@ -231,6 +290,31 @@ function renderFrame(){
     const track = stream.getVideoTracks()[0];
     const facing = track.getSettings().facingMode;
 
+    const motion = detectMotion();
+        updateShake(motion);
+
+        gctx.save();
+
+    // MIRROR KAMERA DEPAN
+    if(facing === "user"){
+        gctx.translate(W,0);
+        gctx.scale(-1,1);
+    }
+
+    gctx.drawImage(
+        video,
+        sx,
+        sy,
+        sw,
+        sh,
+        shakeX,      // ← ganti dari 0
+        shakeY,      // ← ganti dari 0
+        W,
+        H
+    );
+
+    gctx.restore();
+
     gctx.save();
     
     // MIRROR KAMERA DEPAN
@@ -241,16 +325,16 @@ function renderFrame(){
 
     
     gctx.drawImage(
-        video,
-        sx,
-        sy,
-        sw,
-        sh,
-        0,
-        0,
-        W,
-        H
-    );
+            video,
+            sx,
+            sy,
+            sw,
+            sh,
+            shakeX - 2,
+            shakeY - 2,
+            W + 4,
+            H + 4
+        );
 
     gctx.restore();
 
@@ -865,6 +949,11 @@ btnMode.addEventListener('click', () => {
             ? "Foto 120×160"
             : "Video 120×160";
 
+});
+
+btnShake.addEventListener("click", () => {
+    shakeOn = !shakeOn;
+    btnShake.textContent = "GOYANG: " + (shakeOn ? "ON" : "OFF");
 });
 
 btnDither.addEventListener("click",()=>{
