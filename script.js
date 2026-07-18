@@ -1062,3 +1062,31 @@ document.getElementById("btnRetry").onclick=()=>{
         });
 
     }
+
+    function fitPhoneToScreen(){
+    const phone = document.querySelector('.phone');
+    const wrap = document.querySelector('.phone-wrap');
+    if(!phone || !wrap) return;
+
+    // reset dulu biar ukuran asli kebaca
+    phone.style.transform = 'scale(1)';
+
+    const phoneRect = phone.getBoundingClientRect();
+    const availW = wrap.clientWidth - 16;  // sisain sedikit margin kiri-kanan
+    const availH = wrap.clientHeight - 16; // sisain sedikit margin atas-bawah
+
+    const scale = Math.min(
+        1,
+        availW / phoneRect.width,
+        availH / phoneRect.height
+    );
+
+    phone.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', fitPhoneToScreen);
+window.addEventListener('orientationchange', fitPhoneToScreen);
+window.addEventListener('load', fitPhoneToScreen);
+
+// panggil juga langsung, kalau script dimuat setelah DOM siap
+fitPhoneToScreen();

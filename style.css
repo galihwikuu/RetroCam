@@ -49,6 +49,17 @@ html, body {
 }
 
 /* ---------------- phone shell ---------------- */
+.phone-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.phone {
+  transform-origin: center center;
+}
 
 .phone {
   position: relative;

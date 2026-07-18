@@ -22,69 +22,71 @@
 </head>
 <body>
 
-<div class="phone">
-  <div class="brand">◆ N O K I A ◆</div>
-
-  <div class="screen-bezel">
-    <div class="statusbar">
-      <span id="clock">00:00</span>
-      <span id="battery">▮▮▮</span>
-    </div>
-    <div class="screen-wrap">
-      <canvas id="out" width="120" height="160"></canvas>
-
-      <canvas id="grab" width="120" height="160" style="display:none"></canvas>
-      <!-- <div class="scanlines"></div> -->
-      <div class="vignette"></div>
-      <div class="flash" id="flash"></div>
-      <div class="rec-indicator" id="recIndicator"><span class="rec-dot"></span><span id="recTime">00:00</span></div>
-    </div>
-    <div class="caption" id="caption">SIAP MEMOTRET</div>
-  </div>
-
-    <div class="controls">
-
+  <div class="phone-wrap">
+    <div class="phone">
+      <div class="brand">◆ N O K I A ◆</div>
+      
+      <div class="screen-bezel">
+        <div class="statusbar">
+          <span id="clock">00:00</span>
+          <span id="battery">▮▮▮</span>
+        </div>
+        <div class="screen-wrap">
+          <canvas id="out" width="120" height="160"></canvas>
+          
+          <canvas id="grab" width="120" height="160" style="display:none"></canvas>
+          <!-- <div class="scanlines"></div> -->
+          <div class="vignette"></div>
+          <div class="flash" id="flash"></div>
+          <div class="rec-indicator" id="recIndicator"><span class="rec-dot"></span><span id="recTime">00:00</span></div>
+        </div>
+        <div class="caption" id="caption">SIAP MEMOTRET</div>
+      </div>
+      
+      <div class="controls">
+        
         <div class="softkey" id="btnSwitch">
-            <img src="assets/camera.png" alt="Switch Camera">
+          <img src="assets/camera.png" alt="Switch Camera">
         </div>
-
+        
         <div class="shutter" id="btnShot">
-            JEPRET
+          JEPRET
         </div>
-
+        
         <div class="softkey" id="btnSave">
-            <img src="assets/download.png" alt="Download Gambar">
+          <img src="assets/download.png" alt="Download Gambar">
         </div>
-
-    </div>
-
-    <div class="rowbtn">
-
+        
+      </div>
+      
+      <div class="rowbtn">
+        
         <button class="keybtn" id="btnRetry">
-            ULANG
+          ULANG
         </button>
-
+        
         <button class="keybtn" id="btnMode">
-            MODE: FOTO
+          MODE: FOTO
         </button>
-
+        
         <button class="keybtn" id="btnTone">
-            WARNA
+          WARNA
         </button>
-
+        
+      </div>
+      
+      <div class="rowbtn">
+        <button class="keybtn" id="btnDither">RETRO: OFF</button>
+        <button class="keybtn" id="btnShake">GOYANG: OFF</button>
+      </div>
+      
+      <div class="hint" id="hint">made by galihwikuu</div>
     </div>
-
-  <div class="rowbtn">
-    <button class="keybtn" id="btnDither">RETRO: OFF</button>
-    <button class="keybtn" id="btnShake">GOYANG: OFF</button>
+    
+    <video id="video" autoplay playsinline muted style="display:none"></video>
   </div>
-
-  <div class="hint" id="hint">made by galihwikuu</div>
-</div>
-
-<video id="video" autoplay playsinline muted style="display:none"></video>
-
-<script src="script.js"></script>
-
-</body>
-</html>
+    
+    <script src="script.js"></script>
+    
+  </body>
+  </html>
