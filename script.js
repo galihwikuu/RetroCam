@@ -760,7 +760,37 @@ if (mode === 'photo'){
 }
 });
 
-document.getElementById("btnSave").addEventListener("click", () => {
+async function shareOrDownload(blob, filename, mimeType){
+
+    const file = new File([blob], filename, { type: mimeType });
+
+    // Coba pakai Web Share API dulu (native share sheet -> bisa "Save to Photos")
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+
+        try {
+            await navigator.share({
+                files: [file],
+                title: "NokiaCam"
+            });
+            return true; // berhasil dibagikan/disimpan lewat share sheet
+        } catch (err) {
+            // user cancel share sheet, atau error -> lanjut fallback download
+            if (err.name === "AbortError") return false;
+            console.warn("Share gagal, fallback ke download:", err);
+        }
+    }
+
+    // Fallback: cara lama, download biasa
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.download = filename;
+    link.href = url;
+    link.click();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+    return true;
+}
+
+document.getElementById("btnSave").addEventListener("click", async () => {
 
     if (mode === "photo") {
 
@@ -769,29 +799,21 @@ document.getElementById("btnSave").addEventListener("click", () => {
             return;
         }
 
-        const link = document.createElement("a");
+        // ubah dataURL jadi blob
+        const res = await fetch(lastPhotoURL);
+        const blob = await res.blob();
 
-        link.download = "nokiacam_photo_" + Date.now() + ".jpg";
+        await shareOrDownload(blob, "nokiacam_photo_" + Date.now() + ".jpg", "image/jpeg");
 
-        link.href = lastPhotoURL;
-
-        link.click();
-
-        previewMode=false;
+        previewMode = false;
         renderFrame();
+        live = true;
+        previewImage = null;
 
-        live=true;
-
-        previewImage=null;
-
-        if(previewVideo){
-
+        if (previewVideo) {
             previewVideo.pause();
-
             URL.revokeObjectURL(previewVideo.src);
-
-            previewVideo=null;
-
+            previewVideo = null;
         }
 
         caption.textContent = "FOTO TERSIMPAN";
@@ -803,23 +825,10 @@ document.getElementById("btnSave").addEventListener("click", () => {
             return;
         }
 
-        const url = URL.createObjectURL(lastVideoBlob);
-
-        const link = document.createElement("a");
-
         const ext = mimeType.includes("mp4") ? "mp4" : "webm";
+        const vType = mimeType.includes("mp4") ? "video/mp4" : "video/webm";
 
-        link.download = "nokiacam_video_" + Date.now() + "." + ext;
-
-        link.href = url;
-
-        link.click();
-
-        setTimeout(() => {
-
-            URL.revokeObjectURL(url);
-
-        }, 4000);
+        await shareOrDownload(lastVideoBlob, "nokiacam_video_" + Date.now() + "." + ext, vType);
 
         caption.textContent = "VIDEO TERSIMPAN";
 
