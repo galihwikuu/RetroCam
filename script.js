@@ -32,6 +32,7 @@ const hintEl = document.getElementById('hint');
 const W = 480;
 const H = 640;
 let stream = null;
+let currentFacing = "environment";
 let currentDeviceId = null;
 let retroColor = false;
 let tone = 'color'; // color | green | gray
@@ -139,18 +140,15 @@ cams.forEach((c, i) => {
 return cams;
 }
 
-async function startCamera(deviceId) {
-    
-    let facing="environment";
+async function startCamera() {
 
-if (stream) {
-    stream.getTracks().forEach(track => track.stop());
-}
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
 
     const constraints = {
         video: {
-            deviceId: deviceId ? { exact: deviceId } : undefined,
-            facingMode: deviceId ? undefined : { ideal: facing },
+            facingMode: { ideal: currentFacing },
             width: { ideal: 640 },
             height: { ideal: 480 },
             frameRate: { ideal: 8, max: 8 }
@@ -158,40 +156,34 @@ if (stream) {
         audio: false
     };
 
-try {
-    stream = await navigator.mediaDevices.getUserMedia(constraints);
+    try {
 
-    video.srcObject = stream;
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
 
-    await video.play();
-    
-    console.log("Video :", video.videoWidth, video.videoHeight);
-    console.log("Grab  :", grab.width, grab.height);
-    console.log("Out   :", out.width, out.height);
+        video.srcObject = stream;
 
-    await new Promise(resolve => {
+        await video.play();
 
-    if (video.readyState >= 2) {
-        resolve();
-    } else {
-        video.onloadedmetadata = resolve;
+        await new Promise(resolve => {
+            if (video.readyState >= 2) {
+                resolve();
+            } else {
+                video.onloadedmetadata = resolve;
+            }
+        });
+
+        console.log("Video :", video.videoWidth, video.videoHeight);
+        console.log("Grab  :", grab.width, grab.height);
+        console.log("Out   :", out.width, out.height);
+
+        caption.textContent = "SIAP MEMOTRET";
+
+    } catch (e) {
+
+        console.error(e);
+        caption.textContent = "KAMERA GAGAL DIAKSES";
+
     }
-
-    });
-
-    currentDeviceId = deviceId;
-
-    await listCameras();
-
-    caption.textContent = "SIAP MEMOTRET";
-
-} catch (e) {
-
-    console.error(e);
-
-    caption.textContent = "KAMERA GAGAL DIAKSES";
-
-}
 
 }
 
@@ -857,12 +849,15 @@ tone = toneOrder[(toneOrder.indexOf(tone) + 1) % toneOrder.length];
 btnTone.textContent = toneLabel[tone];
 });
 
-document.getElementById('btnSwitch').addEventListener('click', async () => {
-const cams = await listCameras();
-if (cams.length < 2) return;
-const idx = cams.findIndex(c => c.deviceId === currentDeviceId);
-const next = cams[(idx + 1) % cams.length];
-startCamera(next.deviceId);
+document.getElementById("btnSwitch").addEventListener("click", async () => {
+
+    currentFacing =
+        currentFacing === "environment"
+            ? "user"
+            : "environment";
+
+    await startCamera();
+
 });
 
 camSelect.addEventListener('change', () => startCamera(camSelect.value));
