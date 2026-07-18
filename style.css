@@ -42,6 +42,7 @@ html, body {
   color: var(--ink);
   font-family: var(--font-lcd);
   overflow: hidden;
+  touch-action: pan-x pan-y;
   background:
     radial-gradient(circle at 25% 15%, rgba(159,239,143,0.08), transparent 45%),
     radial-gradient(circle at 80% 85%, rgba(143,191,106,0.06), transparent 50%),

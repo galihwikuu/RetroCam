@@ -37,3 +37,30 @@ self.addEventListener("fetch", event => {
     );
 
 });
+
+
+
+
+// cegah pinch-zoom (2 jari)
+document.addEventListener('touchmove', (e) => {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// cegah double-tap zoom
+let lastTouchEnd = 0;
+document.addEventListener('touchend', (e) => {
+    const now = Date.now();
+    if (now - lastTouchEnd <= 300) {
+        e.preventDefault();
+    }
+    lastTouchEnd = now;
+}, { passive: false });
+
+// cegah ctrl+scroll zoom di desktop/browser tertentu
+document.addEventListener('wheel', (e) => {
+    if (e.ctrlKey) {
+        e.preventDefault();
+    }
+}, { passive: false });
