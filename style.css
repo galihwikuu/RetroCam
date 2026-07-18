@@ -1,248 +1,341 @@
-  @font-face {
-    font-family: 'PixelFont';
-    src: local('Courier New');
-  }
+/* ============================================================
+   NOKIA CAM — modern UI, classic phone-font soul
+   Fonts: "Press Start 2P" (chunky pixel display, headers/buttons)
+          "VT323" (dot-matrix LCD digits, clock/rec timer/caption)
+   ============================================================ */
 
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
 
-  html, body {
-    margin: 0;
-    height: 100%;
-    background: #0a0a0a;
-    background-image:
-      radial-gradient(circle at 30% 20%, #1a1a1a, #050505 70%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Courier New', monospace;
-    color: #9fef8f;
-    overflow: hidden;
-  }
-
-  .phone {
-    width: 340px;
-    max-width: 94vw;
-    background: linear-gradient(160deg, #3a3f38, #1c1f1a 60%, #101210);
-    border-radius: 28px;
-    padding: 22px 18px 26px;
-    box-shadow:
-      0 0 0 2px #050505,
-      0 20px 50px rgba(0,0,0,0.7),
-      inset 0 2px 2px rgba(255,255,255,0.08);
-    position: relative;
-  }
-
-  .brand {
-    text-align: center;
-    font-size: 11px;
-    letter-spacing: 4px;
-    color: #7a8a72;
-    margin-bottom: 10px;
-    font-weight: bold;
-  }
-
-  .screen-bezel {
-    background: #0d120c;
-    border-radius: 6px;
-    padding: 10px;
-    box-shadow: inset 0 0 0 2px #050704, inset 0 4px 14px rgba(0,0,0,0.8);
-  }
-
-  .statusbar {
-    display: flex;
-    justify-content: space-between;
-    font-size: 9px;
-    color: #6fae5f;
-    padding: 2px 4px 6px;
-    letter-spacing: 1px;
-  }
-
-  .screen-wrap {
-    position: relative;
-    width: 100%;
-    aspect-ratio: 120 / 160;
-    background: #b7d68f;
-    overflow: hidden;
-    box-shadow: inset 0 0 12px rgba(0,0,0,0.35);
-  }
-
-  #out{
-      display:block;
-      width:100%;
-      height:100%;
-      image-rendering:auto;
-  }
-
-  .scanlines {
-    position: absolute;
-    inset: 0;
-    background: repeating-linear-gradient(
-      to bottom,
-      rgba(0,0,0,0.12) 0px,
-      rgba(0,0,0,0.12) 1px,
-      transparent 1px,
-      transparent 3px
-    );
-    pointer-events: none;
-  }
-
-  .vignette {
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 22px 6px rgba(0,0,0,0.45);
-    pointer-events: none;
-  }
-
-  .flash {
-    position: absolute;
-    inset: 0;
-    background: #fff;
-    opacity: 0;
-    pointer-events: none;
-  }
-  .flash.go { animation: flashpop 220ms ease-out; }
-  @keyframes flashpop {
-    0% { opacity: 0.9; }
-    100% { opacity: 0; }
-  }
-
-  .rec-indicator {
-    position: absolute;
-    top: 6px;
-    left: 6px;
-    display: none;
-    align-items: center;
-    gap: 4px;
-    background: rgba(0,0,0,0.45);
-    padding: 2px 6px;
-    border-radius: 3px;
-    font-size: 8px;
-    color: #f5f5f5;
-    letter-spacing: 1px;
-    z-index: 3;
-  }
-  .rec-indicator.on { display: flex; }
-  .rec-dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #e83c3c;
-    animation: recpulse 1s infinite;
-  }
-  @keyframes recpulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.25; }
-  }
-
-  .shutter.recording {
-    background: radial-gradient(circle at 35% 30%, #7a2222, #3a0d0d 70%);
-    animation: shutterpulse 1.2s infinite;
-  }
-  @keyframes shutterpulse {
-    0%, 100% { box-shadow: 0 4px 0 #0a0c08, 0 6px 10px rgba(0,0,0,0.6), inset 0 2px 3px rgba(255,255,255,0.15); }
-    50% { box-shadow: 0 4px 0 #0a0c08, 0 0 14px 4px rgba(232,60,60,0.55), inset 0 2px 3px rgba(255,255,255,0.15); }
-  }
-
-  .caption {
-    text-align: center;
-    font-size: 9px;
-    color: #6fae5f;
-    padding-top: 6px;
-    letter-spacing: 1px;
-    min-height: 12px;
-  }
-
-  .controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-top: 18px;
-    padding: 0 6px;
-  }
-
-  .softkey {
-    font-size: 10px;
-    color: #d8e8c8;
-    letter-spacing: 1px;
-    width: 60px;
-    text-align: center;
-  }
-
-  .shutter {
-    width: 62px;
-    height: 62px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 35% 30%, #4a5044, #22261e 70%);
-    border: 2px solid #0a0c08;
-    box-shadow:
-      0 4px 0 #0a0c08,
-      0 6px 10px rgba(0,0,0,0.6),
-      inset 0 2px 3px rgba(255,255,255,0.15);
-    color: #cdeab5;
-    font-size: 9px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    user-select: none;
-    transition: transform 60ms ease;
-  }
-  .shutter:active { transform: translateY(3px); box-shadow: 0 1px 0 #0a0c08, inset 0 2px 3px rgba(0,0,0,0.3); }
-
-  .rowbtn { display:flex; justify-content: space-between; margin-top: 14px; padding: 0 4px; gap: 8px; }
-  .keybtn {
-    flex: 1;
-    background: linear-gradient(160deg, #34382f, #1a1c17);
-    border: none;
-    border-radius: 10px;
-    color: #cfe6b8;
-    font-family: inherit;
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 10px 4px;
-    box-shadow: 0 3px 0 #0c0e0a, inset 0 1px 1px rgba(255,255,255,0.08);
-    cursor: pointer;
-  }
-  .keybtn:active { transform: translateY(2px); box-shadow: 0 1px 0 #0c0e0a; }
-
-  a.dl { color: inherit; text-decoration: none; }
-
-  select#camSelect {
-    width: 100%;
-    margin-top: 10px;
-    background: #1a1c17;
-    color: #9fef8f;
-    border: 1px solid #333;
-    border-radius: 6px;
-    font-family: inherit;
-    font-size: 9px;
-    padding: 4px;
-  }
-
-  .hint {
-    text-align: center;
-    color: #5a6a54;
-    font-size: 9px;
-    margin-top: 10px;
-    letter-spacing: 0.5px;
-  }
-
-
-#btnSwitch img{
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-    pointer-events: none;
-    user-select: none;
-    filter: brightness(0) invert(1) contrast(120%);
+:root {
+  --bg-deep: #07080a;
+  --bg-glow: #10140f;
+  --body-top: #4a5044;
+  --body-mid: #262b21;
+  --body-bot: #0e100c;
+  --screen-dark: #0a0d08;
+  --lcd-a: #d8f2ae;
+  --lcd-b: #8fbf6a;
+  --accent: #9fef8f;
+  --accent-dim: #6fae5f;
+  --accent-glow: rgba(159, 239, 143, 0.55);
+  --red: #ff4e4e;
+  --ink: #eaf6dd;
+  --radius-phone: 34px;
+  --radius-screen: 18px;
+  --font-pixel: 'Press Start 2P', monospace;
+  --font-lcd: 'VT323', monospace;
 }
 
-#btnSave   img{
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-    pointer-events: none;
-    user-select: none;
-    filter: brightness(0) invert(1) contrast(120%);
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
 }
+
+html, body {
+  margin: 0;
+  height: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink);
+  font-family: var(--font-lcd);
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 25% 15%, rgba(159,239,143,0.08), transparent 45%),
+    radial-gradient(circle at 80% 85%, rgba(143,191,106,0.06), transparent 50%),
+    var(--bg-deep);
+}
+
+/* ---------------- phone shell ---------------- */
+
+.phone {
+  position: relative;
+  width: 360px;
+  max-width: 94vw;
+  padding: 26px 20px 28px;
+  border-radius: var(--radius-phone);
+  background: linear-gradient(160deg, var(--body-top), var(--body-mid) 55%, var(--body-bot));
+  box-shadow:
+    0 0 0 1px rgba(255,255,255,0.04),
+    0 30px 60px -12px rgba(0,0,0,0.75),
+    0 8px 24px rgba(0,0,0,0.5),
+    inset 0 2px 2px rgba(255,255,255,0.09),
+    inset 0 -18px 30px rgba(0,0,0,0.35);
+}
+
+.phone::before {
+  /* subtle top sheen for a modern glassy touch */
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-phone);
+  background: linear-gradient(180deg, rgba(255,255,255,0.06), transparent 30%);
+  pointer-events: none;
+}
+
+.brand {
+  text-align: center;
+  font-family: var(--font-pixel);
+  font-size: 10px;
+  letter-spacing: 3px;
+  color: var(--accent-dim);
+  margin-bottom: 14px;
+  text-shadow: 0 0 10px var(--accent-glow);
+}
+
+/* ---------------- screen ---------------- */
+
+.screen-bezel {
+  background: #050704;
+  border-radius: 16px;
+  padding: 12px;
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 0 6px 18px rgba(0,0,0,0.85),
+    0 1px 0 rgba(255,255,255,0.05);
+}
+
+.statusbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: var(--font-lcd);
+  font-size: 15px;
+  color: var(--accent-dim);
+  padding: 0 4px 6px;
+  letter-spacing: 1px;
+}
+
+.screen-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 120 / 160;
+  border-radius: var(--radius-screen);
+  background: linear-gradient(180deg, var(--lcd-a), var(--lcd-b));
+  overflow: hidden;
+  box-shadow:
+    inset 0 0 0 3px #04060a,
+    inset 0 0 24px 4px rgba(0,0,0,0.35),
+    0 0 22px -4px var(--accent-glow);
+}
+
+#out {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border-radius: var(--radius-screen);
+}
+
+.scanlines {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.12) 0px,
+    rgba(0,0,0,0.12) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  pointer-events: none;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-screen);
+  box-shadow: inset 0 0 26px 8px rgba(0,0,0,0.4);
+  pointer-events: none;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+.flash.go { animation: flashpop 220ms ease-out; }
+@keyframes flashpop {
+  0% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+
+.rec-indicator {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  display: none;
+  align-items: center;
+  gap: 5px;
+  background: rgba(5, 8, 4, 0.55);
+  backdrop-filter: blur(3px);
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-family: var(--font-lcd);
+  font-size: 14px;
+  color: #fff;
+  letter-spacing: 1px;
+  z-index: 3;
+}
+.rec-indicator.on { display: flex; }
+.rec-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--red);
+  box-shadow: 0 0 6px var(--red);
+  animation: recpulse 1s infinite;
+}
+@keyframes recpulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
+.caption {
+  text-align: center;
+  font-family: var(--font-lcd);
+  font-size: 15px;
+  color: var(--accent-dim);
+  padding-top: 8px;
+  letter-spacing: 1px;
+  min-height: 16px;
+}
+
+/* ---------------- controls ---------------- */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 0 6px;
+}
+
+.softkey {
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(160deg, #3a3f34, #181b15);
+  box-shadow:
+    0 3px 0 #060704,
+    0 6px 14px rgba(0,0,0,0.5),
+    inset 0 1px 1px rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: transform 90ms ease, box-shadow 90ms ease;
+}
+.softkey:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #060704, inset 0 2px 4px rgba(0,0,0,0.4);
+}
+.softkey img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  filter: invert(88%) sepia(24%) saturate(423%) hue-rotate(51deg) brightness(102%) contrast(92%);
+  opacity: 0.9;
+}
+
+.shutter {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  letter-spacing: 1px;
+  color: var(--ink);
+  background: radial-gradient(circle at 35% 28%, #5a6350, #1c2016 72%);
+  box-shadow:
+    0 5px 0 #050603,
+    0 10px 20px rgba(0,0,0,0.55),
+    inset 0 2px 3px rgba(255,255,255,0.15),
+    0 0 0 3px rgba(159,239,143,0.12);
+  cursor: pointer;
+  transition: transform 80ms ease, box-shadow 80ms ease;
+}
+.shutter:active {
+  transform: translateY(3px);
+  box-shadow: 0 2px 0 #050603, inset 0 2px 4px rgba(0,0,0,0.4);
+}
+.shutter.recording {
+  background: radial-gradient(circle at 35% 28%, #8a2f2f, #360d0d 72%);
+  animation: shutterpulse 1.2s infinite;
+}
+@keyframes shutterpulse {
+  0%, 100% { box-shadow: 0 5px 0 #050603, 0 10px 20px rgba(0,0,0,0.55), inset 0 2px 3px rgba(255,255,255,0.15); }
+  50% { box-shadow: 0 5px 0 #050603, 0 0 18px 6px rgba(255,78,78,0.55), inset 0 2px 3px rgba(255,255,255,0.15); }
+}
+
+.rowbtn {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  padding: 0 2px;
+}
+
+.keybtn {
+  flex: 1;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 6px;
+  background: linear-gradient(160deg, #363b30, #191c15);
+  color: var(--accent);
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
+  box-shadow:
+    0 3px 0 #060704,
+    0 6px 12px rgba(0,0,0,0.45),
+    inset 0 1px 1px rgba(255,255,255,0.08);
+  cursor: pointer;
+  transition: transform 90ms ease, box-shadow 90ms ease, color 120ms ease;
+}
+.keybtn:active {
+  transform: translateY(2px);
+  box-shadow: 0 1px 0 #060704, inset 0 2px 4px rgba(0,0,0,0.4);
+}
+.keybtn:hover {
+  color: #fff;
+}
+
+/* highlight state for toggles that are "on" — add class .active via JS if desired */
+.keybtn.active {
+  color: #0a0d08;
+  background: linear-gradient(160deg, var(--accent), var(--accent-dim));
+  box-shadow:
+    0 3px 0 #060704,
+    0 0 14px var(--accent-glow),
+    inset 0 1px 1px rgba(255,255,255,0.25);
+}
+
+.hint {
+  text-align: center;
+  font-family: var(--font-lcd);
+  font-size: 14px;
+  color: #556150;
+  margin-top: 12px;
+  letter-spacing: 0.5px;
+}
+
+select#camSelect {
+  width: 100%;
+  margin-top: 10px;
+  background: #14170f;
+  color: var(--accent);
+  border: 1px solid #2c3126;
+  border-radius: 8px;
+  font-family: var(--font-lcd);
+  font-size: 14px;
+  padding: 6px;
+}
+
+a.dl { color: inherit; text-decoration: none; }
