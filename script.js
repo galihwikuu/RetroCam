@@ -19,7 +19,6 @@ octx.imageSmoothingEnabled = true;
 gctx.imageSmoothingEnabled = true;
 
 const caption = document.getElementById('caption');
-const camSelect = document.getElementById('camSelect');
 const flashEl = document.getElementById('flash');
 const btnDither = document.getElementById('btnDither');
 const btnTone = document.getElementById('btnTone');
@@ -33,7 +32,6 @@ const W = 480;
 const H = 640;
 let stream = null;
 let currentFacing = "environment";
-let currentDeviceId = null;
 let retroColor = false;
 let tone = 'color'; // color | green | gray
 let live = true;
@@ -127,18 +125,6 @@ document.getElementById('clock').textContent =
 setInterval(updateClock, 1000*10);
 updateClock();
 
-async function listCameras(){
-const devices = await navigator.mediaDevices.enumerateDevices();
-const cams = devices.filter(d => d.kind === 'videoinput');
-camSelect.innerHTML = '';
-cams.forEach((c, i) => {
-    const opt = document.createElement('option');
-    opt.value = c.deviceId;
-    opt.textContent = c.label || ('Kamera ' + (i+1));
-    camSelect.appendChild(opt);
-});
-return cams;
-}
 
 async function startCamera() {
 
@@ -860,7 +846,6 @@ document.getElementById("btnSwitch").addEventListener("click", async () => {
 
 });
 
-camSelect.addEventListener('change', () => startCamera(camSelect.value));
 
 document.addEventListener("visibilitychange", async () => {
 
@@ -877,7 +862,7 @@ document.addEventListener("visibilitychange", async () => {
         stream.getVideoTracks()[0].readyState !== "live"
     ) {
 
-        await startCamera(currentDeviceId);
+        await startCamera();
 
     }
 
