@@ -945,10 +945,6 @@ btnMode.addEventListener('click', () => {
             ? "SIAP MEMOTRET"
             : "SIAP MEREKAM";
 
-    hintEl.textContent =
-        mode === "photo"
-            ? "Foto 120×160"
-            : "Video 120×160";
 
 });
 
@@ -1036,6 +1032,23 @@ document.getElementById("btnRetry").onclick=()=>{
         :"SIAP MEREKAM";
 
 }
+
+(function initIntro(){
+    const overlay = document.getElementById('introOverlay');
+    const closeBtn = document.getElementById('introClose');
+    const STORAGE_KEY = 'nokiacam_intro_seen';
+
+    if (localStorage.getItem(STORAGE_KEY)) {
+        overlay.classList.add('hidden');
+        return;
+    }
+
+    closeBtn.addEventListener('click', () => {
+        overlay.classList.add('hidden');
+        localStorage.setItem(STORAGE_KEY, '1');
+    });
+})();
+
 
 (async function init(){
     btnTone.textContent = "NOISE: OFF";
