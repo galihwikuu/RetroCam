@@ -770,7 +770,7 @@ async function shareOrDownload(blob, filename, mimeType){
         try {
             await navigator.share({
                 files: [file],
-                title: "NokiaCam"
+                title: "NokiaCam by -galihwikuu"
             });
             return true; // berhasil dibagikan/disimpan lewat share sheet
         } catch (err) {
