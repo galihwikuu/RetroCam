@@ -52,6 +52,7 @@ let audioContext = null;
 let audioDestination = null;
 let micStream = null;
 let lastPhotoURL = null;
+let noiseOn = false;
 
 console.log(out.width,out.height);
 console.log(out.clientWidth,out.clientHeight);
@@ -181,6 +182,18 @@ async function startCamera() {
 
 }
 
+function applyNoise(data, density){
+    if(!noiseOn) return;
+    for(let i = 0; i < data.length; i += 4){
+        if(Math.random() < density){
+            const dark = Math.random() * 15;
+            data[i]   = dark;
+            data[i+1] = dark;
+            data[i+2] = dark;
+        }
+    }
+}
+
 function renderFrame(){
 
     if(video.readyState < 2) return;
@@ -307,6 +320,11 @@ function renderFrame(){
         }
 
     }
+
+
+    applyNoise(data, 0.0015);
+
+    gctx.putImageData(imgData,0,0);
 
     gctx.putImageData(imgData,0,0);
 
@@ -443,6 +461,17 @@ function takePhoto(){
         data[i+2] = rgb[2];
 
     }
+
+    for(let i=0;i<data.length;i+=4){
+        const rgb = gradeColor(data[i], data[i+1], data[i+2]);
+        data[i]   = rgb[0];
+        data[i+1] = rgb[1];
+        data[i+2] = rgb[2];
+    }
+
+    applyNoise(data, 0.004);   // ← tambahan
+
+    sctx.putImageData(img,0,0);
 
     sctx.putImageData(img,0,0);
 
@@ -841,8 +870,8 @@ btnDither.addEventListener("click",()=>{
 const toneOrder = ['color', 'green', 'gray'];
 const toneLabel = { color: 'WARNA', green: 'HIJAU', gray: 'ABU-ABU' };
 btnTone.addEventListener('click', () => {
-tone = toneOrder[(toneOrder.indexOf(tone) + 1) % toneOrder.length];
-btnTone.textContent = toneLabel[tone];
+    noiseOn = !noiseOn;
+    btnTone.textContent = "NOISE: " + (noiseOn ? "ON" : "OFF");
 });
 
 document.getElementById("btnSwitch").addEventListener("click", async () => {
@@ -910,26 +939,27 @@ document.getElementById("btnRetry").onclick=()=>{
 }
 
 (async function init(){
-if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
-    caption.textContent = 'BROWSER TIDAK DIDUKUNG';
-    return;
-}
-await startCamera(null);
-rafId=requestAnimationFrame(loop);
-})();
+    btnTone.textContent = "NOISE: OFF";
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+        caption.textContent = 'BROWSER TIDAK DIDUKUNG';
+        return;
+    }
+    await startCamera(null);
+    rafId=requestAnimationFrame(loop);
+    })();
 
-if ("serviceWorker" in navigator) {
+    if ("serviceWorker" in navigator) {
 
-    window.addEventListener("load", () => {
+        window.addEventListener("load", () => {
 
-        navigator.serviceWorker.register("sw.js")
+            navigator.serviceWorker.register("sw.js")
 
-        .then(() => {
+            .then(() => {
 
-            console.log("PWA aktif");
+                console.log("PWA aktif");
+
+            });
 
         });
 
-    });
-
-}
+    }
