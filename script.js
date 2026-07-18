@@ -230,19 +230,19 @@ function updateShake(motion){
         return;
     }
 
-    const threshold = 0.5;    // lebih sensitif, karena video 6fps + downscale kecil
-    const maxDiff = 12;     // lebih rendah, biar gampang "penuh"
+    const threshold = 0.5;
+    const maxDiff = 12;
 
     let m = Math.max(0, motion - threshold) / (maxDiff - threshold);
     m = Math.min(1, m);
 
     if(m > motionLevel){
-        motionLevel = m;        // naik instan pas ada gerakan
+        motionLevel = m;
     }else{
-        motionLevel *= 0.9;     // turun pelan-pelan, jadi shake nggak ngilang mendadak
+        motionLevel *= 0.9;
     }
 
-    const amplitude = motionLevel * 2.5;
+    const amplitude = motionLevel * 5;   // ← dinaikin
 
     shakeX += (Math.random() - 0.5) * amplitude;
     shakeY += (Math.random() - 0.5) * amplitude;
@@ -250,8 +250,8 @@ function updateShake(motion){
     shakeX *= 0.8;
     shakeY *= 0.8;
 
-    shakeX = Math.max(-3, Math.min(3, shakeX));
-    shakeY = Math.max(-3, Math.min(3, shakeY));
+    shakeX = Math.max(-6, Math.min(6, shakeX));  // ← dinaikin
+    shakeY = Math.max(-6, Math.min(6, shakeY));  // ← dinaikin
 }
 
 function renderFrame(){
