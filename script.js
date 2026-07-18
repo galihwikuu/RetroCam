@@ -211,11 +211,12 @@ function renderFrame(){
     const facing = track.getSettings().facingMode;
 
     gctx.save();
-
-    if(facing === "user"){
-        gctx.translate(W,0);
-        gctx.scale(-1,1);
-    }
+    
+    // MIRROR KAMERA DEPAN
+    // if(facing === "user"){
+    //     gctx.translate(W,0);
+    //     gctx.scale(-1,1);
+    // }
 
     gctx.drawImage(
         video,
