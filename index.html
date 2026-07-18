@@ -46,6 +46,32 @@
     </div>
   </div>
 
+  <div class="intro-overlay hidden" id="settingsOverlay">
+  <div class="intro-card">
+    <div class="intro-brand">◆ PENGATURAN ◆</div>
+
+    <div class="settings-section">
+      <div class="settings-label">RESOLUSI</div>
+      <div class="settings-options">
+        <button class="keybtn res-option" data-w="120" data-h="160">Retro<br>120×160</button>
+        <button class="keybtn res-option active" data-w="480" data-h="640">Standar<br>480×640</button>
+        <button class="keybtn res-option" data-w="720" data-h="960">HD Retro<br>720×960</button>
+      </div>
+    </div>
+
+    <div class="settings-section">
+      <div class="settings-label">FRAME RATE</div>
+      <div class="settings-options">
+        <button class="keybtn fps-option" data-fps="8">8 fps<br>Jadul</button>
+        <button class="keybtn fps-option active" data-fps="10">10 fps<br>Normal</button>
+        <button class="keybtn fps-option" data-fps="20">20 fps<br>Halus</button>
+      </div>
+    </div>
+
+    <button class="intro-btn" id="settingsClose">TUTUP</button>
+  </div>
+</div>
+
   <div class="phone-wrap">
     <div class="phone">
       <div class="brand">◆ N O K I A ◆</div>
@@ -74,7 +100,7 @@
         </div>
         
         <div class="shutter" id="btnShot">
-          JEPRET
+          CAPTURE
         </div>
         
         <div class="softkey" id="btnSave">
@@ -103,12 +129,23 @@
         <button class="keybtn" id="btnDither">RETRO: OFF</button>
         <button class="keybtn" id="btnShake">GOYANG: OFF</button>
       </div>
+
+      <div class="rowbtn">
+        <button class="keybtn" id="btnSettings">
+          <svg class="gear-icon" viewBox="0 0 24 24" width="14" height="14" fill="currentColor">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94s-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.5.5 0 0 0-.58-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54a.5.5 0 0 0-.5-.42h-3.84a.5.5 0 0 0-.5.42l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.5.5 0 0 0-.58.22L1.4 8.87a.5.5 0 0 0 .12.61l2.03 1.58c-.05.3-.08.63-.08.94s.02.64.07.94L1.51 14.52a.5.5 0 0 0-.12.61l1.92 3.32c.14.24.44.32.58.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.26.42.5.42h3.84c.24 0 .45-.18.5-.42l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.24.1.54.02.58-.22l1.92-3.32a.5.5 0 0 0-.12-.61l-2.02-1.58zM12 15.5A3.5 3.5 0 1 1 12 8.5a3.5 3.5 0 0 1 0 7z"/>
+          </svg>
+          PENGATURAN
+        </button>
+      </div>
       
       <div class="hint" id="hint">made by galihwikuu</div>
     </div>
     
     <video id="video" autoplay playsinline muted style="display:none"></video>
   </div>
+
+  
     
     <script src="script.js"></script>
     

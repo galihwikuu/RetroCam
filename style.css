@@ -123,7 +123,7 @@ html, body {
 .screen-wrap {
   position: relative;
   width: 100%;
-  aspect-ratio: 120 / 160;
+  aspect-ratio: 480 / 640;
   border-radius: var(--radius-screen);
   background: linear-gradient(180deg, var(--lcd-a), var(--lcd-b));
   overflow: hidden;
@@ -472,4 +472,41 @@ a.dl { color: inherit; text-decoration: none; }
 .intro-btn:active {
   transform: translateY(3px);
   box-shadow: 0 1px 0 #060704, inset 0 2px 4px rgba(0,0,0,0.3);
+}
+
+
+.settings-section {
+  margin-bottom: 18px;
+  text-align: left;
+}
+
+.settings-label {
+  font-family: var(--font-pixel);
+  font-size: 9px;
+  color: var(--accent-dim);
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+.settings-options {
+  display: flex;
+  gap: 6px;
+}
+
+.settings-options .keybtn {
+  font-size: 8px;
+  padding: 10px 4px;
+  line-height: 1.6;
+}
+
+#btnSettings {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.gear-icon {
+  flex-shrink: 0;
+  color: var(--accent);
 }

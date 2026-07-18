@@ -33,8 +33,9 @@ const recIndicator = document.getElementById('recIndicator');
 const recTimeEl = document.getElementById('recTime');
 const hintEl = document.getElementById('hint');
 
-const W = 480;
-const H = 640;
+let W = 480;
+let H = 640;
+let targetFPS = 10;
 let stream = null;
 let currentFacing = "environment";
 let retroColor = false;
@@ -144,9 +145,9 @@ async function startCamera() {
     const constraints = {
         video: {
             facingMode: { ideal: currentFacing },
-            width: { ideal: 240 },
-            height: { ideal: 320 },
-            frameRate: { ideal: 10, max: 10 }
+            width: { ideal: W * 2 },
+            height: { ideal: H * 2 },
+            frameRate: { ideal: targetFPS, max: targetFPS }
         },
         audio: false
     };
@@ -188,6 +189,27 @@ async function startCamera() {
 
     }
 
+}
+
+function applyResolution(w, h){
+    W = w;
+    H = h;
+
+    grab.width = W;
+    grab.height = H;
+    out.width = W;
+    out.height = H;
+
+    document.querySelector('.screen-wrap').style.aspectRatio = `${W} / ${H}`;
+
+    frozenFrame = null;
+    prevMotionData = null; // reset baseline motion detection
+}
+
+async function applySettings(w, h, fps){
+    applyResolution(w, h);
+    targetFPS = fps;
+    await startCamera();
 }
 
 function applyNoise(data, density){
@@ -934,7 +956,7 @@ btnMode.addEventListener('click', () => {
         mode === "photo" ? "MODE: FOTO" : "MODE: VIDEO";
 
     btnShot.textContent =
-        mode === "photo" ? "JEPRET" : "REC";
+        mode === "photo" ? "CAPTURE" : "REC";
 
     caption.textContent =
         mode === "photo"
@@ -1028,6 +1050,41 @@ document.getElementById("btnRetry").onclick=()=>{
         :"SIAP MEREKAM";
 
 }
+
+document.getElementById('btnSettings').addEventListener('click', () => {
+    document.getElementById('settingsOverlay').classList.remove('hidden');
+});
+
+document.getElementById('settingsClose').addEventListener('click', () => {
+    document.getElementById('settingsOverlay').classList.add('hidden');
+});
+
+document.querySelectorAll('.res-option').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        document.querySelectorAll('.res-option').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const w = parseInt(btn.dataset.w);
+        const h = parseInt(btn.dataset.h);
+
+        caption.textContent = "MENGATUR ULANG KAMERA...";
+        await applySettings(w, h, targetFPS);
+        caption.textContent = mode === "photo" ? "SIAP MEMOTRET" : "SIAP MEREKAM";
+    });
+});
+
+document.querySelectorAll('.fps-option').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        document.querySelectorAll('.fps-option').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const fps = parseInt(btn.dataset.fps);
+
+        caption.textContent = "MENGATUR ULANG KAMERA...";
+        await applySettings(W, H, fps);
+        caption.textContent = mode === "photo" ? "SIAP MEMOTRET" : "SIAP MEREKAM";
+    });
+});
 
 (function initIntro(){
     const overlay = document.getElementById('introOverlay');
