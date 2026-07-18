@@ -31,7 +31,9 @@
       <span id="battery">▮▮▮</span>
     </div>
     <div class="screen-wrap">
-      <canvas id="out" width="120" height="160"></canvas>
+      <canvas id="out" width="480" height="640"></canvas>
+
+      <canvas id="grab" width="480" height="640" style="display:none"></canvas>
       <!-- <div class="scanlines"></div> -->
       <div class="vignette"></div>
       <div class="flash" id="flash"></div>
@@ -43,7 +45,7 @@
     <div class="controls">
 
         <div class="softkey" id="btnSwitch">
-            GANTI<br>KAMERA
+            <img src="assets/camera.png" alt="Switch Camera">
         </div>
 
         <div class="shutter" id="btnShot">
@@ -51,7 +53,7 @@
         </div>
 
         <div class="softkey" id="btnSave">
-            SIMPAN
+            <img src="assets/download.png" alt="Download Gambar">
         </div>
 
     </div>
@@ -73,7 +75,7 @@
     </div>
 
   <div class="rowbtn">
-    <button class="keybtn" id="btnDither">DITHER: OFF</button>
+    <button class="keybtn" id="btnDither">RETRO: OFF</button>
   </div>
 
   <select id="camSelect"></select>
@@ -81,7 +83,6 @@
 </div>
 
 <video id="video" autoplay playsinline muted style="display:none"></video>
-<canvas id="grab" width="120" height="160" style="display:none"></canvas>
 
 <script src="script.js"></script>
 

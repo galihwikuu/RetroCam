@@ -15,6 +15,9 @@ const octx = out.getContext("2d",{
     willReadFrequently:true
 
 });
+octx.imageSmoothingEnabled = true;
+gctx.imageSmoothingEnabled = true;
+
 const caption = document.getElementById('caption');
 const camSelect = document.getElementById('camSelect');
 const flashEl = document.getElementById('flash');
@@ -26,7 +29,8 @@ const recIndicator = document.getElementById('recIndicator');
 const recTimeEl = document.getElementById('recTime');
 const hintEl = document.getElementById('hint');
 
-const W = 120, H = 160;
+const W = 480;
+const H = 640;
 let stream = null;
 let currentDeviceId = null;
 let retroColor = false;
@@ -50,8 +54,8 @@ let audioDestination = null;
 let micStream = null;
 let lastPhotoURL = null;
 
-let skipCounter = 0;
-let lastFrameData = null;
+console.log(out.width,out.height);
+console.log(out.clientWidth,out.clientHeight);
 
 // palette: nokia LCD green shades (dark -> light), 4 levels
 const palettes = {
@@ -160,6 +164,10 @@ try {
     video.srcObject = stream;
 
     await video.play();
+    
+    console.log("Video :", video.videoWidth, video.videoHeight);
+    console.log("Grab  :", grab.width, grab.height);
+    console.log("Out   :", out.width, out.height);
 
     await new Promise(resolve => {
 
@@ -190,122 +198,145 @@ try {
 function renderFrame(){
 
     if(video.readyState < 2) return;
-
     if(!video.videoWidth) return;
 
-    // Drop frame hanya saat merekam
+    // efek frame drop hanya saat rekam video
     if(recording && Math.random() < 0.25){
         return;
     }
 
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
 
-// draw video cropped/fit into 120x160
-const vw = video.videoWidth, vh = video.videoHeight;
-const targetRatio = W / H;
-const srcRatio = vw / vh;
-let sx, sy, sw, sh;
-if (srcRatio > targetRatio) {
-    sh = vh; sw = vh * targetRatio; sx = (vw - sw) / 2; sy = 0;
-} else {
-    sw = vw; sh = vw / targetRatio; sx = 0; sy = (vh - sh) / 2;
-}
+    const targetRatio = W / H;
+    const srcRatio = vw / vh;
+
+    let sx, sy, sw, sh;
+
+    if(srcRatio > targetRatio){
+
+        sh = vh;
+        sw = vh * targetRatio;
+        sx = (vw - sw) / 2;
+        sy = 0;
+
+    }else{
+
+        sw = vw;
+        sh = vw / targetRatio;
+        sx = 0;
+        sy = (vh - sh) / 2;
+
+    }
+
     const track = stream.getVideoTracks()[0];
-
     const facing = track.getSettings().facingMode;
 
     gctx.save();
 
     if(facing === "user"){
-
         gctx.translate(W,0);
-
         gctx.scale(-1,1);
-
     }
-    gctx.imageSmoothingEnabled = false;
 
-    gctx.drawImage(video,sx,sy,sw,sh,0,0,W,H);
+    gctx.drawImage(
+        video,
+        sx,
+        sy,
+        sw,
+        sh,
+        0,
+        0,
+        W,
+        H
+    );
 
     gctx.restore();
 
-const imgData = gctx.getImageData(0, 0, W, H);
+    const imgData = gctx.getImageData(0,0,W,H);
+    const data = imgData.data;
+
+    if(tone === "color"){
+
+        for(let i=0;i<data.length;i+=4){
+
+            const rgb = gradeColor(
+                data[i],
+                data[i+1],
+                data[i+2]
+            );
+
+            data[i]   = rgb[0];
+            data[i+1] = rgb[1];
+            data[i+2] = rgb[2];
+            data[i+3] = 255;
+        }
+
+    }else{
+
+        const levels = palettes[tone];
+        const levelRgb = levels.map(hexToRgb);
+
+        for(let y=0;y<H;y++){
+
+            for(let x=0;x<W;x++){
+
+                const idx=(y*W+x)*4;
+
+                const lum=
+                    (
+                        0.299*data[idx]+
+                        0.587*data[idx+1]+
+                        0.114*data[idx+2]
+                    )/255;
+
+                let level;
+
+                if(retroColor){
+
+                    const t=bayer4[y%4][x%4];
+
+                    level=Math.floor(lum*4+(t-0.5));
+
+                    level=Math.max(0,Math.min(3,level));
+
+                }else{
+
+                    level=Math.floor(lum*4);
+
+                    level=Math.max(0,Math.min(3,level));
+
+                }
+
+                const c=levelRgb[level];
+
+                data[idx]=c[0];
+                data[idx+1]=c[1];
+                data[idx+2]=c[2];
+                data[idx+3]=255;
+            }
+
+        }
+
+    }
+
+    gctx.putImageData(imgData,0,0);
+    console.log("Render OK");
 
 
-const data = imgData.data;
+    // tampilkan ke layar
+    octx.imageSmoothingEnabled = true;
 
-if (tone === 'color'){
-    for (let i = 0; i < data.length; i += 4){
-    let [r, g, b] = gradeColor(
-        data[i],
-        data[i+1],
-        data[i+2]
+    octx.clearRect(0,0,W,H);
+
+    console.log("Draw to out");
+    octx.drawImage(
+        video,
+        sx, sy, sw, sh,
+        0, 0, W, H
     );
 
-    // Noise sensor
 
-    data[i] = Math.max(0, Math.min(255, r));
-    data[i+1] = Math.max(0, Math.min(255, g));
-    data[i+2] = Math.max(0, Math.min(255, b));
-    data[i+3] = 255;
-    }
-} else {
-    const levels = palettes[tone];
-    const levelRgb = levels.map(hexToRgb);
-    const n = levelRgb.length;
-
-    for (let y = 0; y < H; y++){
-    for (let x = 0; x < W; x++){
-        const idx = (y*W + x) * 4;
-        const r = data[idx], g = data[idx+1], b = data[idx+2];
-        let lum = (0.299*r + 0.587*g + 0.114*b) / 255; // 0..1
-
-        let levelIndex;
-        if (retroColor){
-        const threshold = bayer4[y % 4][x % 4];
-        const scaled = lum * n;
-        levelIndex = Math.floor(scaled + (threshold - 0.5));
-        levelIndex = Math.max(0, Math.min(n - 1, levelIndex));
-        } else {
-        levelIndex = Math.min(n - 1, Math.floor(lum * n));
-        }
-
-        const [pr, pg, pb] = levelRgb[levelIndex];
-        data[idx] = pr; data[idx+1] = pg; data[idx+2] = pb; data[idx+3] = 255;
-    }
-    }
-}
-
-gctx.putImageData(imgData, 0, 0);
-skipCounter++;
-
-if(recording){
-
-    // 2 frame ditahan
-    if(skipCounter % 3 != 0){
-
-        if(lastFrameData){
-
-            octx.putImageData(lastFrameData,0,0);
-
-        }
-
-        return;
-
-    }
-
-}
-
-octx.drawImage(grab,0,0);
-
-lastFrameData=octx.getImageData(0,0,W,H);
-
-octx.globalAlpha=0.10;
-
-octx.drawImage(out,0,0);
-
-octx.globalAlpha=1;
-
-octx.drawImage(grab, 0, 0);
 }
 
 function loop(time){
@@ -340,9 +371,9 @@ const ss = String(s % 60).padStart(2, '0');
 return mm + ':' + ss;
 }
 
-function takePhoto() {
+function takePhoto(){
 
-    if (!video.videoWidth) return;
+    if(!video.videoWidth) return;
 
     const vw = video.videoWidth;
     const vh = video.videoHeight;
@@ -352,14 +383,14 @@ function takePhoto() {
 
     let sx, sy, sw, sh;
 
-    if (srcRatio > targetRatio) {
+    if(srcRatio > targetRatio){
 
         sh = vh;
         sw = vh * targetRatio;
         sx = (vw - sw) / 2;
         sy = 0;
 
-    } else {
+    }else{
 
         sw = vw;
         sh = vw / targetRatio;
@@ -368,27 +399,23 @@ function takePhoto() {
 
     }
 
-    // Kamera 0.3 MP (VGA)
     const saveCanvas = document.createElement("canvas");
 
     saveCanvas.width = 480;
     saveCanvas.height = 640;
 
-    const sctx = saveCanvas.getContext("2d", {
-        willReadFrequently: true
+    const sctx = saveCanvas.getContext("2d",{
+        willReadFrequently:true
     });
 
-    const track = stream.getVideoTracks()[0];
-    const facing = track.getSettings().facingMode;
+    // mirror jika kamera depan
+    const facing = stream.getVideoTracks()[0].getSettings().facingMode;
 
     sctx.save();
 
-    // Mirror jika kamera depan
-    if (facing === "user") {
-
-        sctx.translate(saveCanvas.width, 0);
-        sctx.scale(-1, 1);
-
+    if(facing==="user"){
+        sctx.translate(saveCanvas.width,0);
+        sctx.scale(-1,1);
     }
 
     sctx.drawImage(
@@ -405,52 +432,48 @@ function takePhoto() {
 
     sctx.restore();
 
-    // Terapkan efek retro
-    const imgData = sctx.getImageData(
+    // Terapkan gradeColor agar sama seperti preview
+    const img = sctx.getImageData(
         0,
         0,
         saveCanvas.width,
         saveCanvas.height
     );
 
-    const data = imgData.data;
+    const data = img.data;
 
-    for (let i = 0; i < data.length; i += 4) {
+    for(let i=0;i<data.length;i+=4){
 
-        let [r, g, b] = gradeColor(
+        const rgb = gradeColor(
             data[i],
-            data[i + 1],
-            data[i + 2]
+            data[i+1],
+            data[i+2]
         );
 
-        data[i] = r;
-        data[i + 1] = g;
-        data[i + 2] = b;
+        data[i]   = rgb[0];
+        data[i+1] = rgb[1];
+        data[i+2] = rgb[2];
 
     }
 
-    sctx.putImageData(imgData, 0, 0);
+    sctx.putImageData(img,0,0);
 
-    // Simpan JPEG
     lastPhotoURL = saveCanvas.toDataURL(
         "image/jpeg",
         0.35
     );
 
-    // Preview
     previewImage = new Image();
 
-    previewImage.onload = () => {
+    previewImage.onload = ()=>{
 
         previewMode = true;
-
         live = false;
 
     };
 
     previewImage.src = lastPhotoURL;
 
-    // Flash
     flashEl.classList.remove("go");
     void flashEl.offsetWidth;
     flashEl.classList.add("go");
@@ -577,7 +600,7 @@ async function startRecording() {
 
     const options = {
 
-        videoBitsPerSecond:150000,
+        videoBitsPerSecond:350000,
 
         audioBitsPerSecond:8000
 
@@ -844,17 +867,26 @@ startCamera(next.deviceId);
 
 camSelect.addEventListener('change', () => startCamera(camSelect.value));
 
-document.addEventListener("visibilitychange",()=>{
+document.addEventListener("visibilitychange", async () => {
 
-    if(document.hidden){
+    if (document.hidden) {
 
         cancelAnimationFrame(rafId);
-
-    }else{
-
-        rafId=requestAnimationFrame(loop);
+        return;
 
     }
+
+    if (
+        !stream ||
+        stream.getVideoTracks().length === 0 ||
+        stream.getVideoTracks()[0].readyState !== "live"
+    ) {
+
+        await startCamera(currentDeviceId);
+
+    }
+
+    rafId = requestAnimationFrame(loop);
 
 });
 
