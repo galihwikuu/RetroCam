@@ -146,7 +146,7 @@ async function startCamera() {
             facingMode: { ideal: currentFacing },
             width: { ideal: 240 },
             height: { ideal: 320 },
-            frameRate: { ideal: 6, max: 6 }
+            frameRate: { ideal: 10, max: 10 }
         },
         audio: false
     };
@@ -230,28 +230,29 @@ function updateShake(motion){
         return;
     }
 
-    const threshold = 3;   // di bawah ini dianggap diam total
-    const maxDiff = 25;    // di atas ini dianggap gerak penuh
+    const threshold = 0.5;    // lebih sensitif, karena video 6fps + downscale kecil
+    const maxDiff = 12;     // lebih rendah, biar gampang "penuh"
 
     let m = Math.max(0, motion - threshold) / (maxDiff - threshold);
     m = Math.min(1, m);
 
-    // smoothing biar transisi diam <-> gerak nggak patah-patah
-    motionLevel += (m - motionLevel) * 0.3;
+    if(m > motionLevel){
+        motionLevel = m;        // naik instan pas ada gerakan
+    }else{
+        motionLevel *= 0.9;     // turun pelan-pelan, jadi shake nggak ngilang mendadak
+    }
 
     const amplitude = motionLevel * 2.5;
 
     shakeX += (Math.random() - 0.5) * amplitude;
     shakeY += (Math.random() - 0.5) * amplitude;
 
-    // damping: kalau sudah diam, shake pelan-pelan balik ke 0, bukan mendadak
     shakeX *= 0.8;
     shakeY *= 0.8;
 
     shakeX = Math.max(-3, Math.min(3, shakeX));
     shakeY = Math.max(-3, Math.min(3, shakeY));
 }
-
 
 function renderFrame(){
 
