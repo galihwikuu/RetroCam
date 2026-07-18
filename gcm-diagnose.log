@@ -1,0 +1,198 @@
+﻿Diagnose log at 2026-07-18T11:08:30Z
+
+AppPath: C:\Program Files\Git\mingw64\bin\git-credential-manager.exe
+InstallDir: C:\Program Files\Git\mingw64\bin\
+Version: 2.7.0+d1dd8a4ded75a2b1faae653157ac1699609442ad
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Windows
+OSVersion: 10.0 (build 26200)
+Reading environment variables... OK
+ Variables:
+SystemDrive=C:
+ProgramFiles(x86)=C:\Program Files (x86)
+MSYSTEM=MINGW64
+ProgramW6432=C:\Program Files
+PROCESSOR_IDENTIFIER=AMD64 Family 25 Model 68 Stepping 1, AuthenticAMD
+VBOX_MSI_INSTALL_PATH=C:\Program Files\Oracle\VirtualBox\
+TMP=C:\Users\ADVAN\AppData\Local\Temp
+PROCESSOR_ARCHITECTURE=AMD64
+DriverData=C:\Windows\System32\Drivers\DriverData
+Path=C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\ADVAN\bin;C:\Program Files\WindowsApps\Microsoft.PowerShell_7.6.3.0_x64__8wekyb3d8bbwe;c:\Users\ADVAN\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\debugCommand;c:\Users\ADVAN\AppData\Roaming\Code\User\globalStorage\github.copilot-chat\copilotCli;C:\Program Files\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;D:\MySQL\bin;C:\Users\ADVAN\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\ADVAN\AppData\Local\Programs\Python\Python311\;C:\Program Files\platform-tools;C:\Users\ADVAN\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\ADVAN\AppData\Local\Programs\Python\Python313\;C:\Users\ADVAN\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Python 3.13;C:\Users\ADVAN\AppData\Local\Microsoft\WindowsApps;C:\Users\ADVAN\AppData\Local\Programs\Microsoft VS Code\bin;C:\MinGW\bin;C:\Users\ADVAN\AppData\Roaming\npm;C:\adb;C:\Program Files\Git\cmd;C:\Program Files\nodejs\;C:\ProgramData\ComposerSetup\bin;C:\Program Files\Docker\Docker\resources\bin;D:\php;C:\Users\ADVAN\AppData\Local\Programs\Python\Python311\Scripts\;C:\Users\ADVAN\AppData\Local\Programs\Python\Python311\;C:\Program Files\platform-tools;C:\Users\ADVAN\AppData\Local\Programs\Python\Python313\Scripts\;C:\Users\ADVAN\AppData\Local\Programs\Python\Python313\;C:\Users\ADVAN\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Python 3.13;C:\Users\ADVAN\AppData\Local\Microsoft\WindowsApps;C:\Users\ADVAN\AppData\Local\Programs\Microsoft VS Code\bin;D:\MySQL\bin;C:\MinGW\bin;C:\Program Files\nodejs\;C:\Users\ADVAN\.dotnet\tools;D:\flutter\bin;C:\Users\ADVAN\AppData\Roaming\npm;C:\xampp\php;C:\Users\ADVAN\AppData\Roaming\Composer\vendor\bin;C:\Users\ADVAN\AppData\Local\Microsoft\WinGet\Packages\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\ffmpeg-8.1-full_build\bin;C:\Users\ADVAN\AppData\Local\Programs\Antigravity\bin;
+VSCODE_GIT_ASKPASS_MAIN=c:\Users\ADVAN\AppData\Local\Programs\Microsoft VS Code\4fe60c8b1c\resources\app\extensions\git\dist\askpass-main.js
+ANDROID_AVD_HOME=D:\Android\avd
+VSCODE_GIT_IPC_HANDLE=\\.\pipe\vscode-git-aaa01bb472-sock
+PROCESSOR_REVISION=4401
+TEMP=C:\Users\ADVAN\AppData\Local\Temp
+EFC_5812_4126798990=1
+LOGONSERVER=\\GALIHWIKUU
+TERM=xterm-256color
+USERNAME=galihwikuu
+SystemRoot=C:\WINDOWS
+CHROME_CRASHPAD_PIPE_NAME=\\.\pipe\crashpad_13392_FQKJEHFWSNSXYSNJ
+GIT_EXEC_PATH=C:/Program Files/Git/mingw64/libexec/git-core
+PLINK_PROTOCOL=ssh
+OneDrive=C:\Users\ADVAN\OneDrive
+CommonProgramFiles=C:\Program Files\Common Files
+VSCODE_INJECTION=1
+VSCODE_PYTHON_AUTOACTIVATE_GUARD=1
+PYTHON_BASIC_REPL=1
+ProgramData=C:\ProgramData
+LANG=en_US.UTF-8
+GIT_ASKPASS=c:\Users\ADVAN\AppData\Local\Programs\Microsoft VS Code\4fe60c8b1c\resources\app\extensions\git\dist\askpass.sh
+HOMEPATH=\Users\ADVAN
+OneDriveConsumer=C:\Users\ADVAN\OneDrive
+COMPUTERNAME=GALIHWIKUU
+PYTHONSTARTUP=c:\Users\ADVAN\AppData\Roaming\Code\User\workspaceStorage\1db233c171964a02261abcdcead1f538\ms-python.python\pythonrc.py
+EFC_5812_1592913036=1
+ALLUSERSPROFILE=C:\ProgramData
+CommonProgramW6432=C:\Program Files\Common Files
+COPILOT_DEBUG_NONCE=7cc2953f8517596503a7074eef258b22
+PT8HOME=C:\Program Files\Cisco Packet Tracer 8.2.0
+SESSIONNAME=Console
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+HOMEDRIVE=C:
+windir=C:\WINDOWS
+GIT_TRACE2_PARENT_SID=2799fec3-254c-4e01-9bf7-919f9e163a0b
+VSCODE_GIT_ASKPASS_NODE=C:\Users\ADVAN\AppData\Local\Programs\Microsoft VS Code\Code.exe
+NUMBER_OF_PROCESSORS=12
+OS=Windows_NT
+VBOX_HWVIRTEX_IGNORE_SVM_IN_USE=1
+ProgramFiles=C:\Program Files
+ComSpec=C:\WINDOWS\system32\cmd.exe
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+HOME=C:\Users\ADVAN
+PSModulePath=C:\Users\ADVAN\Documents\PowerShell\Modules;C:\Program Files\PowerShell\Modules;c:\program files\windowsapps\microsoft.powershell_7.6.3.0_x64__8wekyb3d8bbwe\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+TMPDIR=C:\Users\ADVAN\AppData\Local\Temp
+APPDATA=C:\Users\ADVAN\AppData\Roaming
+USERDOMAIN=GALIHWIKUU
+PROCESSOR_LEVEL=25
+asl.log=Destination=file
+USERPROFILE=C:\Users\ADVAN
+LOCALAPPDATA=C:\Users\ADVAN\AppData\Local
+TERM_PROGRAM_VERSION=1.129.0
+USERDOMAIN_ROAMINGPROFILE=GALIHWIKUU
+COLORTERM=truecolor
+PUBLIC=C:\Users\Public
+TERM_PROGRAM=vscode
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is 'C:\Users\ADVAN\AppData\Local\Temp\'...
+Checking basic file I/O...
+Writing to temporary file 'C:\Users\ADVAN\AppData\Local\Temp\93484de98c6284daea19098d'... OK
+Reading from temporary file 'C:\Users\ADVAN\AppData\Local\Temp\93484de98c6284daea19098d'... OK
+Deleting temporary file 'C:\Users\ADVAN\AppData\Local\Temp\93484de98c6284daea19098d'... OK
+Testing IFileSystem instance...
+UserHomePath: C:\Users\ADVAN
+UserDataDirectoryPath: C:\Users\ADVAN\.gcm
+GetCurrentDirectory(): D:\GITHUB CLONE\RetroCam
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: True
+Exception: None
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com...Sending HEAD request to https://example.com... OK
+ OK
+Acquiring free TCP port... OK
+Testing local HTTP loopback connections...
+Creating new HTTP listener for http://localhost:64531/... OK
+Waiting for loopback connection... OK
+Writing response... OK
+Waiting for response data... OK
+Loopback connection data OK
+
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.53.0.windows.1'
+Locating current repository...Git repository at 'D:/GITHUB CLONE/RetroCam/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:C:/Program Files/Git/etc/gitconfig	diff.astextplain.textconv=astextplain
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.required=true
+file:C:/Program Files/Git/etc/gitconfig	http.sslbackend=schannel
+file:C:/Program Files/Git/etc/gitconfig	core.autocrlf=true
+file:C:/Program Files/Git/etc/gitconfig	core.fscache=true
+file:C:/Program Files/Git/etc/gitconfig	core.symlinks=false
+file:C:/Program Files/Git/etc/gitconfig	pull.rebase=false
+file:C:/Program Files/Git/etc/gitconfig	credential.helper=manager
+file:C:/Program Files/Git/etc/gitconfig	credential.https://dev.azure.com.usehttppath=true
+file:C:/Program Files/Git/etc/gitconfig	init.defaultbranch=master
+file:C:/Users/ADVAN/.gitconfig	user.name=galihwikuu
+file:C:/Users/ADVAN/.gitconfig	user.email=galihwikuu
+file:C:/Users/ADVAN/.gitconfig	cradential.helper=store
+file:C:/Users/ADVAN/.gitconfig	credential.https://github.com.username=l200240164-galihwikuu
+file:C:/Users/ADVAN/.gitconfig	credential.helper=manager
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=false
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.symlinks=false
+file:.git/config	core.ignorecase=true
+file:.git/config	remote.origin.url=https://github.com/galihwikuu/RetroCam
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+file:.git/config	branch.main.remote=origin
+file:.git/config	branch.main.merge=refs/heads/main
+file:.git/config	branch.main.vscode-merge-base=origin/main
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+
+------------
+Diagnostic: Microsoft authentication (AAD/MSA)
+Skipped: False
+Success: True
+Exception: None
+Log:
+Broker is not enabled.
+Flow type is: Auto
+Gathering MSAL token cache data... OK
+CacheDirectory: C:\Users\ADVAN\AppData\Local\.IdentityService
+CacheFileName: msal.cache
+CacheFilePath: C:\Users\ADVAN\AppData\Local\.IdentityService\msal.cache
+Creating cache helper... OK
+Verifying MSAL token cache persistence... OK
+
+------------
+Diagnostic: GitHub API
+Skipped: False
+Success: True
+Exception: None
+Log:
+Using 'https://github.com/' as API target.
+Querying '/meta' endpoint... OK
+

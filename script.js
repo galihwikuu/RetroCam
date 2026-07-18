@@ -213,10 +213,10 @@ function renderFrame(){
     gctx.save();
     
     // MIRROR KAMERA DEPAN
-    if(facing === "user"){
-        gctx.translate(W,0);
-        gctx.scale(-1,1);
-    }
+    // if(facing === "user"){
+    //     gctx.translate(W,0);
+    //     gctx.scale(-1,1);
+    // }
 
     gctx.drawImage(
         video,
