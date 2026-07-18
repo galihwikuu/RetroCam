@@ -28,8 +28,8 @@ const recIndicator = document.getElementById('recIndicator');
 const recTimeEl = document.getElementById('recTime');
 const hintEl = document.getElementById('hint');
 
-const W = 480;
-const H = 640;
+const W = 120;
+const H = 160;
 let stream = null;
 let currentFacing = "environment";
 let retroColor = false;
@@ -135,9 +135,9 @@ async function startCamera() {
     const constraints = {
         video: {
             facingMode: { ideal: currentFacing },
-            width: { ideal: 640 },
-            height: { ideal: 480 },
-            frameRate: { ideal: 8, max: 8 }
+            width: { ideal: 240 },
+            height: { ideal: 320 },
+            frameRate: { ideal: 6, max: 6 }
         },
         audio: false
     };
@@ -379,8 +379,8 @@ function takePhoto(){
 
     const saveCanvas = document.createElement("canvas");
 
-    saveCanvas.width = 480;
-    saveCanvas.height = 640;
+    saveCanvas.width = W;
+    saveCanvas.height = H;
 
     const sctx = saveCanvas.getContext("2d",{
         willReadFrequently:true
@@ -404,8 +404,8 @@ function takePhoto(){
         sh,
         0,
         0,
-        saveCanvas.width,
-        saveCanvas.height
+        W,
+        H
     );
 
     sctx.restore();
@@ -578,7 +578,7 @@ async function startRecording() {
 
     const options = {
 
-        videoBitsPerSecond:350000,
+        videoBitsPerSecond:180000,
 
         audioBitsPerSecond:8000
 
