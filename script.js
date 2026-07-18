@@ -230,8 +230,8 @@ function updateShake(motion){
         return;
     }
 
-    const threshold = 0.5;
-    const maxDiff = 12;
+    const threshold = 0.3;   // makin sensitif ke gerakan kecil
+    const maxDiff = 8;       // lebih gampang "penuh" jadi motionLevel cepat maksimal
 
     let m = Math.max(0, motion - threshold) / (maxDiff - threshold);
     m = Math.min(1, m);
@@ -239,19 +239,19 @@ function updateShake(motion){
     if(m > motionLevel){
         motionLevel = m;
     }else{
-        motionLevel *= 0.9;
+        motionLevel *= 0.93;  // decay lebih lambat, shake bertahan lebih lama
     }
 
-    const amplitude = motionLevel * 5;   // ← dinaikin
+    const amplitude = motionLevel * 9;   // ← paling kerasa, dari 5 ke 9
 
     shakeX += (Math.random() - 0.5) * amplitude;
     shakeY += (Math.random() - 0.5) * amplitude;
 
-    shakeX *= 0.8;
-    shakeY *= 0.8;
+    shakeX *= 0.85;   // sedikit lebih "liar", damping dikurangin dari 0.8
+    shakeY *= 0.85;
 
-    shakeX = Math.max(-6, Math.min(6, shakeX));  // ← dinaikin
-    shakeY = Math.max(-6, Math.min(6, shakeY));  // ← dinaikin
+    shakeX = Math.max(-10, Math.min(10, shakeX));   // ← naikin dari 6 ke 10
+    shakeY = Math.max(-10, Math.min(10, shakeY));
 }
 
 function renderFrame(){
@@ -326,16 +326,12 @@ function renderFrame(){
 
     
     gctx.drawImage(
-            video,
-            sx,
-            sy,
-            sw,
-            sh,
-            shakeX - 2,
-            shakeY - 2,
-            W + 4,
-            H + 4
-        );
+        video, sx, sy, sw, sh,
+        shakeX - 10,
+        shakeY - 10,
+        W + 20,
+        H + 20
+    );
 
     gctx.restore();
 
