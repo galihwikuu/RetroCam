@@ -149,6 +149,14 @@ async function startCamera() {
         video.srcObject = stream;
 
         await video.play();
+        console.log(stream.getVideoTracks()[0].getSettings());
+
+        console.log({
+            video: video.videoWidth + "x" + video.videoHeight,
+            outCanvas: out.width + "x" + out.height,
+            outCss: out.clientWidth + "x" + out.clientHeight,
+            dpr: window.devicePixelRatio
+        });
 
         await new Promise(resolve => {
             if (video.readyState >= 2) {
@@ -213,11 +221,12 @@ function renderFrame(){
     gctx.save();
     
     // MIRROR KAMERA DEPAN
-    // if(facing === "user"){
-    //     gctx.translate(W,0);
-    //     gctx.scale(-1,1);
-    // }
+    if(facing === "user"){
+        gctx.translate(W,0);
+        gctx.scale(-1,1);
+    }
 
+    
     gctx.drawImage(
         video,
         sx,
@@ -300,19 +309,19 @@ function renderFrame(){
     }
 
     gctx.putImageData(imgData,0,0);
-    console.log("Render OK");
 
 
     // tampilkan ke layar
     octx.imageSmoothingEnabled = true;
 
+    octx.setTransform(1, 0, 0, 1, 0, 0);
+
     octx.clearRect(0,0,W,H);
 
-    console.log("Draw to out");
     octx.drawImage(
-        video,
-        sx, sy, sw, sh,
-        0, 0, W, H
+        grab,
+        0, 0,
+        W, H
     );
 
 
