@@ -38,7 +38,7 @@ let H = 640;
 let targetFPS = 10;
 let stream = null;
 let currentFacing = "environment";
-let retroColor = false;
+let retroMode = 'off'; // 'off' | 'hijau' | 'putih'
 let tone = 'color'; // color | green | gray
 let live = true;
 let frozenFrame = null;
@@ -78,9 +78,9 @@ function gradeColor(r,g,b){
 
     const lum=0.299*r+0.587*g+0.114*b;
 
-    if(retroColor){
+    if(retroMode === 'hijau'){
 
-        // HP China 0.3 MP
+        // HP China 0.3 MP — cast hijau/gelap
 
         const sat=0.68;
 
@@ -92,15 +92,39 @@ function gradeColor(r,g,b){
         g*=1.04;
         b*=0.88;
 
-        const contrast=0.88;
+        const contrast=0.85;   // dari 0.72 → 0.85 (kabut berkurang, kontras balik agak normal)
 
         r=((r-128)*contrast)+128;
         g=((g-128)*contrast)+128;
         b=((b-128)*contrast)+128;
 
-        r-=5;
-        g-=2;
-        b-=8;
+        r+=18;   // dari 32 → 18
+        g+=16;   // dari 30 → 16
+        b+=15;   // dari 28 → 15
+    }else if(retroMode === 'putih'){
+
+        // CCD lama — washed out, overexposed, milky white
+
+        const sat=0.55;
+
+        r=lum+(r-lum)*sat;
+        g=lum+(g-lum)*sat;
+        b=lum+(b-lum)*sat;
+
+        // kontras dikurangi drastis, bikin kesan pudar/berkabut
+        const contrast=0.95;
+
+        r=((r-128)*contrast)+128;
+        g=((g-128)*contrast)+128;
+        b=((b-128)*contrast)+128;
+
+        // angkat semua channel biar keliatan "mutih"/highlight blown out
+        r+=8;
+        g+=6;
+        b+=5;
+
+        // sedikit cast biru-putih dingin khas CCD tua
+        b+=4;
 
     }else{
 
@@ -282,7 +306,7 @@ function renderFrame(){
     if(!video.videoWidth) return;
 
     // efek frame drop hanya saat rekam video
-    if(recording && Math.random() < 0.25){
+    if(recording && targetFPS <= 10 && Math.random() < 0.25){
         return;
     }
 
@@ -396,7 +420,7 @@ function renderFrame(){
 
                 let level;
 
-                if(retroColor){
+                if(retroMode !== 'off'){
 
                     const t=bayer4[y%4][x%4];
 
@@ -636,7 +660,7 @@ async function startRecording() {
     lastVideoBlob = null;
 
     // Video dari canvas
-    const canvasStream = out.captureStream(15);
+    const canvasStream = out.captureStream(targetFPS);
 
     // Audio dari mikrofon
     micStream = null;
@@ -720,9 +744,9 @@ async function startRecording() {
 
     const options = {
 
-        videoBitsPerSecond:180000,
+        videoBitsPerSecond:320000,
 
-        audioBitsPerSecond:8000
+        audioBitsPerSecond:12000
 
     };
 
@@ -971,13 +995,12 @@ btnShake.addEventListener("click", () => {
     btnShake.textContent = "GOYANG: " + (shakeOn ? "ON" : "OFF");
 });
 
-btnDither.addEventListener("click",()=>{
+const retroOrder = ['off', 'hijau', 'putih'];
+const retroLabel = { off: 'RETRO: OFF', hijau: 'RETRO: HIJAU', putih: 'RETRO: PUTIH' };
 
-    retroColor=!retroColor;
-
-    btnDither.textContent=
-        "RETRO: "+(retroColor?"ON":"OFF");
-
+btnDither.addEventListener("click", () => {
+    retroMode = retroOrder[(retroOrder.indexOf(retroMode) + 1) % retroOrder.length];
+    btnDither.textContent = retroLabel[retroMode];
 });
 
 const toneOrder = ['color', 'green', 'gray'];
