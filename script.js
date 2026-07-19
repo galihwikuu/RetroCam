@@ -126,6 +126,35 @@ function gradeColor(r,g,b){
         // sedikit cast biru-putih dingin khas CCD tua
         b+=4;
 
+    }else if(retroMode === 'nokia'){
+
+    // Ciri khas foto kamera Nokia CCD jadul (~2004-2006):
+    // - saturasi rendah tapi nggak sampai abu-abu total
+    // - cast dingin kebiruan/cyan
+    // - dynamic range sempit (nggak ada hitam pekat / putih tajam)
+    // - sedikit "flat" karena sensor CCD kecil
+
+    const sat = 0.72;
+
+    r = lum + (r - lum) * sat;
+    g = lum + (g - lum) * sat;
+    b = lum + (b - lum) * sat;
+
+    // cast dingin: turunin merah, naikin biru dikit
+    r *= 0.92;
+    g *= 1.0;
+    b *= 1.08;
+
+    // dynamic range sempit — angkat hitam, turunin putih
+    const contrast = 0.8;
+    r = ((r - 128) * contrast) + 128;
+    g = ((g - 128) * contrast) + 128;
+    b = ((b - 128) * contrast) + 128;
+
+    r += 6;
+    g += 4;
+    b += 10;
+    
     }else{
 
         // Natural
@@ -378,8 +407,14 @@ function renderFrame(){
         W + 20,
         H + 20
     );
-
+    
     gctx.restore();
+
+    if(retroMode === 'nokia'){
+    gctx.filter = 'blur(0.6px)';
+    gctx.drawImage(grab, 0, 0);
+    gctx.filter = 'none';
+    }
 
     const imgData = gctx.getImageData(0,0,W,H);
     const data = imgData.data;
@@ -447,6 +482,26 @@ function renderFrame(){
         }
 
     }
+
+        if(retroMode === 'nokia'){
+        const cx = W / 2, cy = H / 2;
+        const maxDist = Math.sqrt(cx*cx + cy*cy);
+
+        for(let y = 0; y < H; y++){
+            for(let x = 0; x < W; x++){
+                const idx = (y*W + x) * 4;
+                const dx = x - cx, dy = y - cy;
+                const dist = Math.sqrt(dx*dx + dy*dy) / maxDist;
+                const darken = 1 - Math.pow(dist, 2.5) * 0.45;
+
+                data[idx]   *= darken;
+                data[idx+1] *= darken;
+                data[idx+2] *= darken;
+            }
+        }
+    }
+
+    applyNoise(data, 0.0015);
 
 
     applyNoise(data, 0.0015);
@@ -995,8 +1050,8 @@ btnShake.addEventListener("click", () => {
     btnShake.textContent = "GOYANG: " + (shakeOn ? "ON" : "OFF");
 });
 
-const retroOrder = ['off', 'hijau', 'putih'];
-const retroLabel = { off: 'RETRO: OFF', hijau: 'RETRO: HIJAU', putih: 'RETRO: PUTIH' };
+const retroOrder = ['off', 'hijau', 'putih', 'nokia'];
+const retroLabel = { off: 'RETRO: OFF', hijau: 'RETRO: HIJAU', putih: 'RETRO: PUTIH', nokia: 'RETRO: NOKIA' };
 
 btnDither.addEventListener("click", () => {
     retroMode = retroOrder[(retroOrder.indexOf(retroMode) + 1) % retroOrder.length];
